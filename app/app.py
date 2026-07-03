@@ -1,9 +1,10 @@
 from flask import Flask, render_template
+import os
 
 app = Flask(__name__)
 
-APP_VERSION = "1.0.0"
-ENVIRONMENT = "LOCAL"
+APP_VERSION = os.getenv("APP_VERSION", "1.0.0")
+ENVIRONMENT = os.getenv("ENVIRONMENT", "LOCAL")
 
 
 @app.route("/")
@@ -16,4 +17,9 @@ def home():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+   
+    app.run(
+        host="0.0.0.0",
+        port=5000,
+        debug=True
+    )
