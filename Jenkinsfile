@@ -5,18 +5,16 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Checking out source code...'
                 checkout scm
             }
         }
 
-        stage('Setup Python Environment') {
+        stage('Setup Environment') {
             steps {
                 sh '''
-                    python -m venv venv
-                    . venv/bin/activate
-                    python -m pip install --upgrade pip
-                    python -m pip install -r requirements.txt
+                python -m venv venv
+                ./venv/bin/python -m pip install --upgrade pip
+                ./venv/bin/python -m pip install -r requirements.txt
                 '''
             }
         }
@@ -24,8 +22,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh '''
-                    . venv/bin/activate
-                    python -m pytest
+                ./venv/bin/python -m pytest
                 '''
             }
         }
@@ -33,24 +30,18 @@ pipeline {
         stage('Run Ruff') {
             steps {
                 sh '''
-                    . venv/bin/activate
-                    python -m ruff check .
+                ./venv/bin/python -m ruff check .
                 '''
             }
         }
     }
 
     post {
-        always {
-            echo 'Pipeline Finished'
-        }
-
         success {
-            echo 'CI Pipeline Successful'
+            echo 'Pipeline Successful'
         }
-
         failure {
-            echo 'CI Pipeline Failed'
+            echo 'Pipeline Failed'
         }
     }
 }
