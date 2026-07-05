@@ -34,6 +34,13 @@ pipeline {
                 '''
             }
         }
+        stage('Build Docker Image') {
+    steps {
+        sh '''
+        docker build -t employee-portal:v1 .
+        '''
+    }
+}
     }
 
     post {
