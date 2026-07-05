@@ -3,12 +3,7 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
+        
         stage('Setup Environment') {
             steps {
                 sh '''
