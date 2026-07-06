@@ -30,12 +30,35 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            steps {
-                sh '''
-                docker build -t employee-portal:v1 .
-                '''
-            }
+    steps {
+        sh '''
+        docker build -t employee-portal:${BUILD_NUMBER} .
+        '''
+    }
+}
+
+stage('Docker Login') {
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'dockerhub-creds',
+            usernameVariable: 'DOCKER_USER',
+            passwordVariable: 'DOCKER_PASS'
+        )]) {
+            sh '''
+            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+            '''
         }
+    }
+}
+
+stage('Push Docker Image') {
+    steps {
+        sh '''
+        docker tag employee-portal:${BUILD_NUMBER} gsahasra333/employee-portal:${BUILD_NUMBER}
+        docker push gsahasra333/employee-portal:${BUILD_NUMBER}
+        '''
+    }
+}
 
         stage('Deploy Container') {
             steps {
@@ -45,7 +68,7 @@ pipeline {
                 docker run -d \
                   --name employee-portal \
                   -p 5000:5000 \
-                  employee-portal:v1
+                  employee-portal:${BUILD_NUMBER}
                 '''
             }
         }
