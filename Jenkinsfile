@@ -72,7 +72,18 @@ stage('Push Docker Image') {
                 '''
             }
         }
+stage('Health Check') {
+    steps {
+        sh '''
+        echo "Waiting for application to start..."
+        sleep 5
 
+        curl -f http://host.docker.internal:5000
+
+        echo "Application is healthy!"
+        '''
+    }
+}
     }
 
     post {
