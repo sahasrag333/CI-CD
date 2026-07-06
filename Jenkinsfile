@@ -3,7 +3,6 @@ pipeline {
 
     stages {
 
-        
         stage('Setup Environment') {
             steps {
                 sh '''
@@ -29,13 +28,28 @@ pipeline {
                 '''
             }
         }
+
         stage('Build Docker Image') {
-    steps {
-        sh '''
-        docker build -t employee-portal:v1 .
-        '''
-    }
-}
+            steps {
+                sh '''
+                docker build -t employee-portal:v1 .
+                '''
+            }
+        }
+
+        stage('Deploy Container') {
+            steps {
+                sh '''
+                docker rm -f employee-portal || true
+
+                docker run -d \
+                  --name employee-portal \
+                  -p 5000:5000 \
+                  employee-portal:v1
+                '''
+            }
+        }
+
     }
 
     post {
