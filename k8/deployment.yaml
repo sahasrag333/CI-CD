@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: employee-portal
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: employee-portal
+
+  template:
+    metadata:
+      labels:
+        app: employee-portal
+
+    spec:
+      containers:
+      - name: employee-portal
+        image: gsahasra333/employee-portal:latest
+
+        ports:
+        - containerPort: 5000
