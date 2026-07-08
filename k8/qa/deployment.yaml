@@ -3,9 +3,10 @@ kind: Deployment
 
 metadata:
   name: employee-portal
+  namespace: qa
 
 spec:
-  replicas: 2
+  replicas: 1
 
   selector:
     matchLabels:
@@ -19,7 +20,6 @@ spec:
     spec:
       containers:
       - name: employee-portal
-        image: gsahasra333/employee-portal:IMAGE_TAG
-
+        image: gsahasra333/employee-portal:9
         ports:
         - containerPort: 5000
