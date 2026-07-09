@@ -20,6 +20,6 @@ spec:
     spec:
       containers:
       - name: employee-portal
-        image: image: gsahasra333/employee-portal:IMAGE_TAG
+        image: gsahasra333/employee-portal:IMAGE_TAG
         ports:
         - containerPort: 5000
