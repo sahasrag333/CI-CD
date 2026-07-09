@@ -98,32 +98,7 @@ stage('QA Health Check') {
         '''
     }
 }
-stage('Approve Production Deployment') {
-    steps {
-        input(
-            message: 'Deploy to Production?',
-            ok: 'Deploy'
-        )
-    }
-}
-stage('Deploy to Production') {
-    steps {
-        sh '''
-        cp k8/production/deployment.yaml k8/production/deployment-temp.yaml
 
-        sed -i "s/IMAGE_TAG/${BUILD_NUMBER}/g" k8/production/deployment-temp.yaml
-
-        kubectl apply -f k8/production/deployment-temp.yaml
-        kubectl apply -f k8/production/service.yaml
-        '''
-    }
-}stage('Production Health Check') {
-    steps {
-        sh '''
-        kubectl rollout status deployment/employee-portal -n production
-        '''
-    }
-}
 
     }
 
